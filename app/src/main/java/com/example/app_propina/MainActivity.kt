@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import java.text.NumberFormat
 import com.example.app_propina.ui.theme.App_PropinaTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +52,11 @@ class MainActivity : ComponentActivity() {
 //Funcion de PropinaApp
 @Composable
 fun PropinaApp() {
+    //Variables
+    var ingresoDinero by remember { mutableStateOf("") }
+
+    val cantidad = ingresoDinero.toDoubleOrNull() ?: 0.0
+    val tip = calcularPropina(cantidad)
 
     //Agregamos columna
     Column(
@@ -64,10 +68,46 @@ fun PropinaApp() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-
-    }
+        Text(
+            text = stringResource(R.string.calcularPropina),
+            modifier = Modifier
+                .padding(bottom = 16.dp, top = 40.dp)
+                .align(alignment = Alignment.Start)
+        )
+        EditNumberField(
+            value = ingresoDinero,
+            onValueChanged = { ingresoDinero = it },
+            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth()
+        )
+        Text(
+            text = stringResource(R.string.tip_amount, tip),
+            style = MaterialTheme.typography.displaySmall
+        )
+        Spacer(modifier = Modifier.height(150.dp))
+    }//Fin Columna
 
 }//Fin PropinaApp
+
+
+@Composable
+fun EditNumberField(value: Any, onValueChanged: () -> Unit, modifier: Modifier) {
+    TextField(
+        value = value,
+        singleLine = true,
+        modifier = modifier,
+        onValueChange = onValueChanged,
+        label = { Text(stringResource(R.string.bill_amount)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
+}//Fin EditNumberField
+
+
+/**
+ * Funcion que calcula la propina
+ */
+private fun calcularPropina(amount: Double) {
+
+}//Fin calcularPropina
 
 
 
